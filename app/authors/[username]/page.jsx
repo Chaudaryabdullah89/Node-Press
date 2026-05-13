@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MOCK_POSTS } from "../../data";
 import { MapPin, Calendar, BarChart2, FileText, Heart } from "lucide-react";
+import toast from "react-hot-toast";
 
 const AuthorProfilePage = () => {
   const { username } = useParams();
@@ -14,12 +15,25 @@ const AuthorProfilePage = () => {
   const [activeTab, setActiveTab] = useState("articles");
 
   useEffect(() => {
-    const authorPosts = MOCK_POSTS.filter(
-      (post) => post.author?.username === username,
-    );
-    if (authorPosts.length > 0) {
-      setAuthor(authorPosts[0].author);
-      setPosts(authorPosts);
+    const fetchAuthor = async () => {
+      try {
+        const res = await fetch(
+          `/api/user/author/getauthor?username=${username}`,
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setAuthor(data.author);
+          setPosts(data.author.posts || []);
+        } else {
+          console.error("Failed to fetch author:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching author:", error);
+      }
+    };
+
+    if (username) {
+      fetchAuthor();
     }
   }, [username]);
 
@@ -31,16 +45,18 @@ const AuthorProfilePage = () => {
     );
   }
 
-  const totalViews = posts.reduce((acc, p) => acc + (p.viewCount || 0), 0);
-
   const stats = [
     { label: "Articles", value: posts.length, icon: FileText },
     {
       label: "Total Views",
-      value: totalViews.toLocaleString(),
+      value: (author.totalViews || 0).toLocaleString(),
       icon: BarChart2,
     },
-    { label: "Total Likes", value: "1.2K", icon: Heart },
+    {
+      label: "Followers",
+      value: (author.followerCount || 0).toLocaleString(),
+      icon: Heart,
+    },
   ];
 
   return (
@@ -65,9 +81,10 @@ const AuthorProfilePage = () => {
             <Image
               src={
                 author.avatar ||
+                author.user?.avatar ||
                 `https://i.pravatar.cc/150?u=${author.username}`
               }
-              alt={author.name}
+              alt={author.user?.name || author.username}
               fill
               className="object-cover"
               sizes="112px"
@@ -81,7 +98,10 @@ const AuthorProfilePage = () => {
             >
               All Authors
             </Link>
-            <button className="px-5 py-2 bg-black text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors">
+            <button
+              onClick={() => toast.success("Follow feature comming soon")}
+              className="px-5 py-2 bg-black text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors"
+            >
               Follow
             </button>
           </div>
@@ -90,15 +110,13 @@ const AuthorProfilePage = () => {
         {/* Name & Meta */}
         <div className="mb-8">
           <h1 className="text-3xl font-black tracking-tight text-gray-900 mb-1">
-            {author.name}
+            {author.user?.name || author.username}
           </h1>
           <p className="text-slate-400 text-sm font-bold mb-4">
             @{author.username}
           </p>
           <p className="text-slate-600 text-sm leading-relaxed max-w-xl">
-            A passionate writer and editorial contributor at NodePress. Covering
-            the intersection of culture, technology, and modern life with a
-            sharp perspective and an eye for detail.
+            {author.bio || author.user?.bio || "No bio provided yet."}
           </p>
 
           <div className="flex items-center gap-6 mt-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
@@ -155,8 +173,7 @@ const AuthorProfilePage = () => {
             </div>
           ) : (
             posts.map((post, idx) => {
-              const category =
-                post.categories?.[0]?.category?.name || "Uncategorized";
+              const category = post.category?.name || "Uncategorized";
               return (
                 <Link
                   key={post.id}

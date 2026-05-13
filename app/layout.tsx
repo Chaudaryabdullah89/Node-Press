@@ -7,16 +7,19 @@ import AuthProvider from "./components/AuthProvider";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
+// const cormorant = Cormorant_Garamond({
+//   variable: "--font-cormorant",
+//   subsets: ["latin"],
+//   weight: ["300", "400", "500", "600", "700"],
+// });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+// const inter = Inter({
+//   variable: "--font-inter",
+//   subsets: ["latin"],
+// });
+
+const cormorant = { variable: "font-serif" };
+const inter = { variable: "font-sans" };
 
 export const metadata: Metadata = {
   title: {

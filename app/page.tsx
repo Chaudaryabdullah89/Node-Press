@@ -57,12 +57,16 @@ export default function Home() {
     }
   };
   const getauthor = async function () {
-    const req = await fetch("/api/user/author/getauthors");
-    const res = await req.json();
-    if (req.ok) {
-      setauthors(res.authors);
-    } else {
-      toast.error("Error while Getting Authors");
+    try {
+      const req = await fetch("/api/user/author/topauthors");
+      const res = await req.json();
+      if (req.ok) {
+        setauthors(res.authors);
+      } else {
+        toast.error("Error while fetching featured authors");
+      }
+    } catch (error) {
+      console.error("Error fetching authors:", error);
     }
   };
 
@@ -269,7 +273,7 @@ export default function Home() {
           {(authors || []).slice(0, 4).map((author: any) => (
             <Link
               key={author.id}
-              href={`/authors/${author.user?.username}`}
+              href={`/authors/${author.username}`}
               className="group flex flex-col items-center text-center"
             >
               <div className="relative w-24 h-24 mb-6">
