@@ -112,15 +112,15 @@ export const authOptions: NextAuthOptions = {
                     dbUser = await prisma.user.create({
                         data: {
                             email: user.email,
-                            username: user.name || user.email.split("@")[0],
-                            password: await bcrypt.hash(Math.random().toString(36), 10), // Random pass for OAuth users
-                            role: "USER",
+                            name: user.name || user.email.split("@")[0],
+                            username: user.name?.replace(/\s+/g, "").toLowerCase() || user.email.split("@")[0],
+                            password: await bcrypt.hash(Math.random().toString(36), 10),
+                            role: "READER",
                             avatar: user.image || "",
                         },
                     });
                 }
-                
-                // Attach db specific info to the user object for the jwt callback
+
                 (user as any).id = dbUser.id;
                 (user as any).role = dbUser.role;
                 (user as any).inkwellToken = await createInkwellToken(dbUser);
@@ -134,8 +134,6 @@ export const authOptions: NextAuthOptions = {
                 token.role = (user as any).role;
                 token.inkwellToken = (user as any).inkwellToken;
             }
-
-            // Refresh role + token after session update (e.g. user became an author)
             if (trigger === "update" && token.email) {
                 const dbUser = await prisma.user.findUnique({
                     where: { email: token.email as string },
