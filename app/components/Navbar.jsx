@@ -283,16 +283,12 @@ const Navbar = () => {
                   </button>
                 </Link>
               ) : (
-                <button
-                  onClick={() => {
-                    toast.error("You must be logged in to apply");
-                    route.push(`/login?directedfrom=${pathname}`);
-                  }}
-                  className="px-5 py-2 bg-gradient-to-r from-red-600 to-rose-500 hover:from-red-700 hover:to-rose-600 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:-translate-y-1 transition-all duration-300 text-xs font-black uppercase tracking-widest text-white rounded-xl flex gap-2.5 items-center cursor-pointer"
-                >
-                  <Pencil size={14} />
-                  <span>Author Dashboard</span>
-                </button>
+                <Link href="/signup">
+                  <button className="px-5 py-2 cursor-pointer  transition-all duration-300 text-xs font-black uppercase tracking-widest text-black rounded-xl flex gap-2.5 items-center cursor-pointer">
+                    <Pencil size={14} />
+                    <span>Write With Us</span>
+                  </button>
+                </Link>
               )}
             </div>
           </div>
