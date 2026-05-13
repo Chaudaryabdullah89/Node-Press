@@ -103,7 +103,7 @@ const LoginPage = () => {
             {loading ? "Signing In..." : "Sign In"}
           </button>
 
-          {/* Divider */}3
+          {/* Divider */}
           <div className="relative my-8 text-center">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-100"></div>

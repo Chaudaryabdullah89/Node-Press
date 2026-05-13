@@ -227,17 +227,49 @@ export default function Home() {
         </div>
         <div className="w-full lg:w-auto relative z-10">
           <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const emailInput = (e.target as any).email.value;
+              if (!emailInput) return;
+              
+              const btn = (e.target as any).querySelector('button');
+              const originalText = btn.innerText;
+              btn.disabled = true;
+              btn.innerText = "Subscribing...";
+
+              try {
+                const response = await fetch("/api/subscribe", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email: emailInput }),
+                });
+
+                if (response.ok) {
+                  toast.success("Welcome! Check your email for a confirmation.");
+                  (e.target as any).reset();
+                } else {
+                  const data = await response.json();
+                  toast.error(data.error || "Subscription failed");
+                }
+              } catch (error) {
+                toast.error("An error occurred. Please try again.");
+              } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
+              }
+            }}
             className="flex flex-col sm:flex-row gap-3"
           >
             <input
+              required
+              name="email"
               type="email"
               placeholder="Enter your email"
               className="px-8 py-4 bg-white border border-slate-200 rounded-full outline-none focus:border-black transition-colors min-w-[300px] text-sm font-medium"
             />
             <button
               type="submit"
-              className="px-10 py-4 bg-black text-white font-black uppercase tracking-widest text-xs rounded-full hover:bg-zinc-800 transition-all hover:shadow-lg active:scale-95"
+              className="px-10 py-4 bg-black text-white font-black uppercase tracking-widest text-xs rounded-full hover:bg-zinc-800 transition-all hover:shadow-lg active:scale-95 disabled:opacity-50"
             >
               Subscribe
             </button>

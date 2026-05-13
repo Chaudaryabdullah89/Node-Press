@@ -1,8 +1,43 @@
 "use client";
 import React from "react";
-import { Mail, MessageSquare, MapPin, Send } from "lucide-react";
+import { Mail, MessageSquare, MapPin, Send, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Page = () => {
+  const [loading, setLoading] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    name: "",
+    email: "",
+    subject: "General Inquiry",
+    message: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Message sent! Check your email for confirmation.");
+        setFormData({ name: "", email: "", subject: "General Inquiry", message: "" });
+      } else {
+        toast.error(data.error || "Failed to send message");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <section className="relative border-b my-5 border-slate-100 bg-white overflow-hidden">
@@ -91,7 +126,7 @@ const Page = () => {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubmit}
               className="bg-white border border-slate-100 p-8 lg:p-12 rounded-[40px] shadow-2xl shadow-black/5"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -100,7 +135,10 @@ const Page = () => {
                     Full Name
                   </label>
                   <input
+                    required
                     type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Julian Voss"
                     className="w-full bg-zinc-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm outline-none focus:border-black focus:bg-white transition-all"
                   />
@@ -110,7 +148,10 @@ const Page = () => {
                     Email Address
                   </label>
                   <input
+                    required
                     type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="julian@example.com"
                     className="w-full bg-zinc-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm outline-none focus:border-black focus:bg-white transition-all"
                   />
@@ -120,7 +161,11 @@ const Page = () => {
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">
                   Subject
                 </label>
-                <select className="w-full bg-zinc-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm outline-none focus:border-black focus:bg-white transition-all appearance-none cursor-pointer">
+                <select 
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  className="w-full bg-zinc-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm outline-none focus:border-black focus:bg-white transition-all appearance-none cursor-pointer"
+                >
                   <option>General Inquiry</option>
                   <option>Write for Us</option>
                   <option>Advertising</option>
@@ -132,17 +177,30 @@ const Page = () => {
                   Your Message
                 </label>
                 <textarea
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="How can we help you?"
                   rows={6}
                   className="w-full bg-zinc-50 border border-slate-100 rounded-2xl py-4 px-6 text-sm outline-none focus:border-black focus:bg-white transition-all resize-none"
                 />
               </div>
               <button
+                disabled={loading}
                 type="submit"
-                className="w-full bg-black text-white font-black uppercase tracking-[0.2em] py-3 rounded-xl text-sm hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+                className="w-full bg-black text-white font-black uppercase tracking-[0.2em] py-3 rounded-xl text-sm hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
-                <Send size={16} />
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={16} />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send size={16} />
+                  </>
+                )}
               </button>
             </form>
           </div>

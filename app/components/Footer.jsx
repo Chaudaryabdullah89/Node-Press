@@ -1,5 +1,8 @@
 "use client";
+import React, { useState } from "react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const TwitterIcon = () => (
   <svg
@@ -72,6 +75,35 @@ const footerLinks = {
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Welcome! Check your email for a confirmation.");
+        setEmail("");
+      } else {
+        toast.error(data.error || "Subscription failed");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <footer className="bg-[#0a0a0a] text-white mt-20">
@@ -90,19 +122,27 @@ const Footer = () => {
           </div>
           <div>
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubscribe}
               className="flex gap-0 max-w-md"
             >
               <input
+                required
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 className="flex-1 bg-white/5 border border-white/15 border-r-0 text-white placeholder-zinc-500 px-5 py-3 text-sm outline-none focus:border-white/40 transition-colors rounded-l-sm"
               />
               <button
+                disabled={loading}
                 type="submit"
-                className="bg-white text-black font-black text-xs uppercase tracking-widest px-6 py-3 hover:bg-zinc-200 transition-colors whitespace-nowrap rounded-r-sm cursor-pointer"
+                className="bg-white text-black font-black text-xs uppercase tracking-widest px-6 py-3 hover:bg-zinc-200 transition-colors whitespace-nowrap rounded-r-sm cursor-pointer flex items-center gap-2 disabled:opacity-50"
               >
-                Subscribe →
+                {loading ? (
+                  <Loader2 className="animate-spin" size={14} />
+                ) : (
+                  "Subscribe →"
+                )}
               </button>
             </form>
             <p className="text-zinc-600 text-xs mt-3">
