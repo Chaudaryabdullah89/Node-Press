@@ -718,7 +718,7 @@ const Page = () => {
                   "A passionate writer contributing to the NodePress editorial collective. "}
               </p>
               <Link
-                href={`/author/${post.author.username}`}
+                href={`/authors/${post.author.username}`}
                 className="inline-block text-[10px] font-black uppercase tracking-widest border-b border-black pb-0.5 hover:text-slate-500 transition-colors"
               >
                 View Author Profile →
