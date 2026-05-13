@@ -60,8 +60,12 @@ const Navbar = () => {
       try {
         const res = await fetch("/api/post/getallposts");
         const data = await res.json();
-        if (res.ok) setAllPosts(data.posts || []);
-      } catch (e) {}
+        if (res.ok) {
+          setAllPosts(data.posts || []);
+        }
+      } catch (e) {
+        console.error("Navbar: Failed to fetch posts for search", e);
+      }
     };
     fetchAllPosts();
   }, []);

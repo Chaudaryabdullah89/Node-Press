@@ -14,7 +14,6 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    allowedDevOrigins: ["192.168.18.25"],
   },
 };
 

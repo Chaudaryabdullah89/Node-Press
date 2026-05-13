@@ -7,6 +7,7 @@ export async function GET(req) {
     const categoryId = searchParams.get("categoryId");
     console.log("categoryId", categoryId);
     const postId = searchParams.get("postId");
+
     const tagIds = searchParams.getAll("tagId");
 
     if (!postId) {
@@ -36,7 +37,13 @@ export async function GET(req) {
             },
           },
         ],
+
+        take: 3,
+        orderBy: {
+          createdAt: "desc",
+        },
       },
+
       include: {
         category: true,
         author: {
@@ -50,13 +57,8 @@ export async function GET(req) {
           },
         },
       },
-      take: 3,
-      orderBy: {
-        createdAt: "desc",
-      },
     });
-
-    console.log("relatedPosts", relatedPosts.length);
+    console.log("relatedPosts", relatedPosts);
     return NextResponse.json(relatedPosts);
   } catch (error) {
     console.error("Related posts error:", error);

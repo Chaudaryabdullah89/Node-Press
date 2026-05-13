@@ -23,11 +23,11 @@ const inter = { variable: "font-sans" };
 
 export const metadata: Metadata = {
   title: {
-    default: "Inkwell — A Magazine for the Curious Mind",
-    template: "%s | Inkwell",
+    default: "Node Press",
+    template: "%s | Node Press",
   },
   description:
-    "Inkwell is a premium platform for writers and readers who believe in the power of thoughtful storytelling. Discover long-form essays, travel narratives, cultural critiques, and more.",
+    "Node Press is a premium platform for writers and readers who believe in the power of thoughtful storytelling. Discover long-form essays, travel narratives, cultural critiques, and more.",
   keywords: [
     "blog",
     "articles",

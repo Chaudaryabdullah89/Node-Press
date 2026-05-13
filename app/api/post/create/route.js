@@ -13,7 +13,9 @@ export async function POST(req) {
       publishedAt,
       authorId,
       viewCount,
+      
     } = await req.json();
+
 
     const author = await prisma.author.findUnique({
       where: { id: authorId },
