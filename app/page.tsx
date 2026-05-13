@@ -84,26 +84,21 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-[1300px] mx-auto px-6 py-12">
-      <section className="grid grid-cols-3 lg:grid-cols-3 gap-12">
+    <div className="max-w-[1300px] mx-auto px-4 md:px-6 py-8 md:py-12">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2">
-          <div className=" flex justify-between  my-5  border-b-1  border-slate-300">
-            <h2 className="text-3xl  font-heading font-black tracking-tighter mb-2  uppercase ">
+          <div className="flex justify-between items-center my-5 border-b border-slate-200 pb-3">
+            <h2 className="text-2xl md:text-3xl font-heading font-black tracking-tighter uppercase">
               Featured Stories
             </h2>
-            <h2 className="flex gap-2 mt-2 hover:text-red-500 transition-all duration-300">
-              <Link
-                href={"/stories?featuredstories=true"}
-                className="items-center  font-bold "
-              >
-                Read More{" "}
+            <h2 className="flex gap-2 items-center hover:text-red-500 transition-all duration-300">
+              <Link href="/stories?featuredstories=true" className="font-bold text-sm">
+                Read More
               </Link>
-              <span>
-                <ArrowRight size={16} className="relative top-1" />
-              </span>
+              <ArrowRight size={16} />
             </h2>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {data.featured.map((item, idx) => (
               <PostCard key={item.id || idx} post={item} />
             ))}
@@ -134,24 +129,19 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className=" my-20">
-        <div className=" flex justify-between  my-5  border-b-1  border-slate-300">
-          <h2 className="text-3xl  font-heading font-black tracking-tighter mb-2  uppercase ">
+      <section className="my-12 md:my-20">
+        <div className="flex justify-between items-center my-5 border-b border-slate-200 pb-3">
+          <h2 className="text-2xl md:text-3xl font-heading font-black tracking-tighter uppercase">
             Latest News
           </h2>
-          <h2 className="flex gap-2 mt-2 hover:text-red-500 transition-all duration-300">
-            <Link
-              href={"/stories?Latestpost=true"}
-              className="items-center  font-bold "
-            >
-              Read More{" "}
+          <h2 className="flex gap-2 items-center hover:text-red-500 transition-all duration-300">
+            <Link href="/stories?Latestpost=true" className="font-bold text-sm">
+              Read More
             </Link>
-            <span>
-              <ArrowRight size={16} className="relative top-1" />
-            </span>
+            <ArrowRight size={16} />
           </h2>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.latest.map((item, idx) => (
             <PostCard key={item.id || idx} post={item} />
           ))}

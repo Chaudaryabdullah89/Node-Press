@@ -302,8 +302,8 @@ const Page = () => {
         className="fixed top-0 left-0 bg-black h-1 z-[100] transition-all duration-100"
         style={{ width: `${ReadingProcess}%` }}
       ></div>
-      <div className="fixed bottom-8 bg-white/90 backdrop-blur-md rounded-full border border-gray-200 shadow-lg max-w-[420px] h-12 z-50 left-1/2 -translate-x-1/2 flex items-center px-4">
-        <div className="flex items-center w-full justify-around">
+      <div className="fixed bottom-6 md:bottom-8 bg-white/90 backdrop-blur-md rounded-full border border-gray-200 shadow-lg w-[95%] max-w-[420px] h-12 z-50 left-1/2 -translate-x-1/2 flex items-center px-1 md:px-4">
+        <div className="flex items-center w-full justify-evenly md:justify-around">
           <div className="border-r border-slate-200 pr-2">
             <button
               onClick={handlelikepost}
@@ -315,7 +315,7 @@ const Page = () => {
                 size={18}
               />
               <span
-                className={`${like ? "text-red-500" : "text-slate-500"} text-xs font-bold group-hover:text-red-500`}
+                className={`${like ? "text-red-500" : "text-slate-500"} text-[10px] md:text-xs font-bold group-hover:text-red-500`}
               >
                 {post?._count?.likes}
               </span>
@@ -332,7 +332,7 @@ const Page = () => {
                 size={18}
               />
               <span
-                className={`${opencommentpanel ? "text-blue-500" : "text-slate-500"} text-xs font-bold group-hover:text-blue-500`}
+                className={`${opencommentpanel ? "text-blue-500" : "text-slate-500"} text-[10px] md:text-xs font-bold group-hover:text-blue-500`}
               >
                 {comments.length}
               </span>
@@ -350,7 +350,7 @@ const Page = () => {
                 size={18}
               />
               <span
-                className={`${saved ? "text-amber-500" : "text-slate-500"} text-xs font-bold group-hover:text-amber-500`}
+                className={`${saved ? "text-amber-500" : "text-slate-500"} text-[10px] md:text-xs font-bold group-hover:text-amber-500 hidden sm:inline`}
               >
                 {saved ? "Saved" : "Save"}
               </span>
@@ -366,7 +366,7 @@ const Page = () => {
                 className="text-slate-500 hover:scale-110 transition-all duration-300 group-hover:text-green-500"
                 size={18}
               />
-              <span className="text-slate-500 text-xs font-bold group-hover:text-green-500">
+              <span className="text-slate-500 text-[10px] md:text-xs font-bold group-hover:text-green-500 hidden sm:inline">
                 Share
               </span>
             </button>
@@ -385,7 +385,7 @@ const Page = () => {
 
         {/* commnet panel  */}
         {opencommentpanel && (
-          <div className="fixed right-0  transition-all duration-300 top-0 bottom-0 z-50 w-[400px]  bg-white">
+          <div className="fixed right-0 transition-all duration-300 top-0 bottom-0 z-50 w-full sm:w-[400px] bg-white shadow-2xl">
             <div className="flex justify-between text-slate-500 flex-row-reverse p-8 border-b border-gray-100">
               <span className="">
                 <X
@@ -401,7 +401,7 @@ const Page = () => {
               </span>
             </div>
 
-            <div className="p-8 overflow-y-auto h-[100vh]">
+            <div className="p-6 md:p-8 overflow-y-auto h-[calc(100vh-180px)]">
               {comments.length > 0 ? (
                 <div className="space-y-8">
                   {comments.map((comment, idx) => (
@@ -515,7 +515,7 @@ const Page = () => {
           <div className="absolute inset-0 bg-black/40 z-10" />
 
           {/* Content Container */}
-          <div className="absolute inset-0 z-20 flex flex-col justify-center text-white px-8 md:px-16 lg:px-24">
+          <div className="absolute inset-0 z-20 flex flex-col justify-center text-white px-6 md:px-16 lg:px-24">
             <div className="max-w-4xl">
               <div className="flex items-center gap-2 text-xs font-medium mb-4 uppercase tracking-widest opacity-90">
                 <Link
@@ -610,8 +610,8 @@ const Page = () => {
         </section>
 
         {/* Article Content */}
-        <section className=" max-w-4xl mx-auto flex gap-10">
-          <article className=" px-6 py-16">
+        <section className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10">
+          <article className="flex-1 px-4 md:px-6 py-12 md:py-16 min-w-0">
             {/* Author Info */}
             <div className="flex justify-between ">
               <div className="flex items-center gap-4 mb-10 pb-10 border-b border-gray-100">
@@ -685,7 +685,7 @@ const Page = () => {
               </span>
             </div>
           </article>
-          <div className="sticky h-fit mt-16 top-24 mb-10 min-w-[280px] max-w-[350px]">
+          <div className="lg:sticky h-fit lg:mt-16 top-24 mb-16 lg:mb-10 w-full lg:min-w-[280px] lg:max-w-[350px] px-4 md:px-6 lg:px-0">
             {/* About the Author */}
             <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
               <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4">

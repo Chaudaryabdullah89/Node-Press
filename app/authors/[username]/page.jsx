@@ -76,8 +76,8 @@ const AuthorProfilePage = () => {
       {/* Author Info */}
       <div className="max-w-4xl mx-auto px-6">
         {/* Avatar — overlaps the hero */}
-        <div className="flex items-end justify-between -mt-16 mb-6">
-          <div className="relative w-28 h-28 rounded-2xl overflow-hidden ring-4 ring-white shadow-xl flex-shrink-0">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between -mt-16 mb-6 gap-6 md:gap-0">
+          <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden ring-4 ring-white shadow-xl flex-shrink-0">
             <Image
               src={
                 author.avatar ||
@@ -87,20 +87,20 @@ const AuthorProfilePage = () => {
               alt={author.user?.name || author.username}
               fill
               className="object-cover"
-              sizes="112px"
+              sizes="(max-width: 768px) 112px, 128px"
             />
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 w-full md:w-auto justify-center md:justify-end">
             <Link
               href="/authors"
-              className="px-5 py-2 border border-slate-200 rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-50 transition-colors"
+              className="flex-1 md:flex-none text-center px-5 py-2.5 border border-slate-200 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-colors"
             >
               All Authors
             </Link>
             <button
-              onClick={() => toast.success("Follow feature comming soon")}
-              className="px-5 py-2 bg-black text-white rounded-full text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors"
+              onClick={() => toast.success("Follow feature coming soon")}
+              className="flex-1 md:flex-none px-5 py-2.5 bg-black text-white rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-colors"
             >
               Follow
             </button>
@@ -108,18 +108,18 @@ const AuthorProfilePage = () => {
         </div>
 
         {/* Name & Meta */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-black tracking-tight text-gray-900 mb-1">
+        <div className="mb-8 text-center md:text-left">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 mb-1">
             {author.user?.name || author.username}
           </h1>
           <p className="text-slate-400 text-sm font-bold mb-4">
             @{author.username}
           </p>
-          <p className="text-slate-600 text-sm leading-relaxed max-w-xl">
+          <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-xl mx-auto md:mx-0">
             {author.bio || author.user?.bio || "No bio provided yet."}
           </p>
 
-          <div className="flex items-center gap-6 mt-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-6 mt-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
             <span className="flex items-center gap-1.5">
               <MapPin size={12} />
               New York, USA
@@ -178,12 +178,23 @@ const AuthorProfilePage = () => {
                 <Link
                   key={post.id}
                   href={`/stories/${post.slug}`}
-                  className="group flex gap-6 items-start py-8 border-b border-slate-100 hover:bg-slate-50 -mx-6 px-6 transition-colors duration-200"
+                  className="group flex flex-col md:flex-row gap-4 md:gap-6 items-start py-8 border-b border-slate-100 hover:bg-slate-50 -mx-4 md:-mx-6 px-4 md:px-6 transition-colors duration-200"
                 >
-                  {/* Index */}
-                  <span className="text-slate-200 font-black text-4xl leading-none w-8 flex-shrink-0 mt-1 tabular-nums">
+                  {/* Index - Hidden on mobile */}
+                  <span className="hidden md:flex text-slate-200 font-black text-4xl leading-none w-8 flex-shrink-0 mt-1 tabular-nums">
                     {String(idx + 1).padStart(2, "0")}
                   </span>
+
+                  {/* Thumbnail - Top on mobile */}
+                  <div className="relative w-full md:w-32 h-48 md:h-24 rounded-xl overflow-hidden flex-shrink-0">
+                    <Image
+                      src={post.imageUrl}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 128px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
 
                   {/* Text */}
                   <div className="flex-1 min-w-0">
@@ -195,7 +206,7 @@ const AuthorProfilePage = () => {
                         year: "numeric",
                       })}
                     </span>
-                    <h2 className="text-lg font-black text-gray-900 leading-snug mb-2 group-hover:text-red-600 transition-colors duration-200">
+                    <h2 className="text-xl md:text-lg font-black text-gray-900 leading-snug mb-2 group-hover:text-red-600 transition-colors duration-200">
                       {post.title}
                     </h2>
                     <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed">
@@ -205,17 +216,6 @@ const AuthorProfilePage = () => {
                       <span>{post.viewCount?.toLocaleString()} views</span>
                       <span>5 min read</span>
                     </div>
-                  </div>
-
-                  {/* Thumbnail */}
-                  <div className="relative w-24 h-24 md:w-32 md:h-24 rounded-xl overflow-hidden flex-shrink-0">
-                    <Image
-                      src={post.imageUrl}
-                      alt={post.title}
-                      fill
-                      sizes="128px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
                   </div>
                 </Link>
               );

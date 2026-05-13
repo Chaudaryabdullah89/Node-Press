@@ -40,15 +40,15 @@ const Page = () => {
     <>
       <section className="relative border-b my-5 border-slate-100 bg-white overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_50%,rgba(139,92,246,0.06),transparent_50%),radial-gradient(circle_at_90%_50%,rgba(244,63,94,0.06),transparent_50%)]" />
-        <div className="relative flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 md:px-12 py-16 gap-8">
+        <div className="relative flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16 gap-8">
           <div className="">
             <p className="text-[11px] font-black uppercase tracking-[0.25em] text-red-500 mb-3">
               The Collective
             </p>
-            <h1 className="text-6xl font-black font-heading leading-none mb-4">
+            <h1 className="text-4xl md:text-6xl font-black font-heading leading-tight mb-4">
               Our <span className=" ">Authors</span>
             </h1>
-            <p className="text-slate-500 max-w-lg leading-relaxed">
+            <p className="text-slate-500 max-w-lg leading-relaxed text-sm md:text-base">
               Meet the thinkers, writers, and creators who bring their unique
               perspectives to NodePress every week.
             </p>

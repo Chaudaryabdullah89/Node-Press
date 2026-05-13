@@ -56,16 +56,16 @@ const Page = () => {
       <div className="">
         <section className="relative border-b my-5 border-slate-100 bg-white overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_50%,rgba(139,92,246,0.06),transparent_50%),radial-gradient(circle_at_90%_50%,rgba(244,63,94,0.06),transparent_50%)]" />
-          <div className="relative flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 md:px-12 py-16 gap-8">
+          <div className="relative flex flex-col lg:flex-row items-start lg:items-center justify-between max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16 gap-8">
             <div className="">
               <p className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 mb-3">
                 Discover
               </p>
-              <h1 className="text-6xl font-black font-heading leading-none mb-4">
+              <h1 className="text-4xl md:text-6xl font-black font-heading leading-tight mb-4">
                 All Stories
               </h1>
-              <p className="text-slate-500 max-w-lg leading-relaxed">
-                Every article, essay, and guide published on Code Ink —
+              <p className="text-slate-500 max-w-lg leading-relaxed text-sm md:text-base">
+                Every article, essay, and guide published on Node Press —
                 searchable, filterable, and always worth your time.
               </p>
             </div>
@@ -138,18 +138,18 @@ const Page = () => {
           )}
         </div>
 
-        <section className="my-32 max-w-7xl mx-auto bg-zinc-50 border border-zinc-100 rounded-[40px] p-12 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-12 overflow-hidden relative mx-6">
-          <div className="max-w-xl relative z-10">
-            <h2 className="text-sm font-black uppercase tracking-[0.4em] text-red-500 mb-6">
+        <section className="my-16 md:my-32 max-w-7xl mx-auto bg-zinc-50 border border-zinc-100 rounded-[32px] md:rounded-[40px] p-8 md:p-12 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-12 overflow-hidden relative mx-4 md:mx-6">
+          <div className="max-w-xl relative z-10 text-center lg:text-left">
+            <h2 className="text-[10px] md:text-sm font-black uppercase tracking-[0.4em] text-red-500 mb-4 md:mb-6">
               Stay Informed
             </h2>
-            <h3 className="text-4xl lg:text-5xl font-heading font-black tracking-tighter uppercase leading-[1.1] mb-6">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black tracking-tighter uppercase leading-[1.1] mb-6">
               The world's best stories,{" "}
-              <span className=" text-zinc-400 text-3xl lg:text-4xl">
+              <span className=" text-zinc-400 text-2xl md:text-3xl lg:text-4xl">
                 delivered to your inbox.
               </span>
             </h3>
-            <p className="text-slate-500 text-lg leading-relaxed">
+            <p className="text-slate-500 text-base md:text-lg leading-relaxed">
               Join 50,000+ curious minds and get our weekly digest of the most
               thought-provoking articles.
             </p>

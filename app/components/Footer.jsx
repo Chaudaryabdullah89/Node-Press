@@ -111,11 +111,11 @@ const Footer = () => {
       <div className="border-b border-white/10">
         <div className="max-w-[1300px] mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div>
-            <h2 className="font-heading text-4xl lg:text-5xl font-bold leading-tight mb-3">
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-3">
               Stories worth{" "}
               <span className="text-zinc-400 ">reading every week.</span>
             </h2>
-            <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
+            <p className="text-zinc-400 text-sm leading-relaxed max-w-sm mb-6 lg:mb-0">
               Join 50,000+ curious readers who get our best hand-picked articles
               delivered straight to their inbox.
             </p>
@@ -123,7 +123,7 @@ const Footer = () => {
           <div>
             <form
               onSubmit={handleSubscribe}
-              className="flex gap-0 max-w-md"
+              className="flex flex-col sm:flex-row gap-0 max-w-md"
             >
               <input
                 required
@@ -131,12 +131,12 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="flex-1 bg-white/5 border border-white/15 border-r-0 text-white placeholder-zinc-500 px-5 py-3 text-sm outline-none focus:border-white/40 transition-colors rounded-l-sm"
+                className="flex-1 bg-white/5 border border-white/15 sm:border-r-0 text-white placeholder-zinc-500 px-5 py-3 text-sm outline-none focus:border-white/40 transition-colors rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
               />
               <button
                 disabled={loading}
                 type="submit"
-                className="bg-white text-black font-black text-xs uppercase tracking-widest px-6 py-3 hover:bg-zinc-200 transition-colors whitespace-nowrap rounded-r-sm cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                className="bg-white text-black font-black text-xs uppercase tracking-widest px-6 py-4 sm:py-3 hover:bg-zinc-200 transition-colors whitespace-nowrap rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {loading ? (
                   <Loader2 className="animate-spin" size={14} />
@@ -145,7 +145,7 @@ const Footer = () => {
                 )}
               </button>
             </form>
-            <p className="text-zinc-600 text-xs mt-3">
+            <p className="text-zinc-600 text-[10px] sm:text-xs mt-3 text-center sm:text-left">
               No spam, unsubscribe at any time.
             </p>
           </div>
