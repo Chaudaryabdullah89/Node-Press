@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import { prisma } from "../../../lib/prisma";
 
@@ -7,7 +7,7 @@ const SECRET = new TextEncoder().encode(
   "inkwell-super-secret-key-2026-change-in-production",
 );
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   try {
     const { token } = await request.json();
 
