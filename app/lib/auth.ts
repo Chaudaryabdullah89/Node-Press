@@ -80,8 +80,9 @@ export const authOptions: NextAuthOptions = {
                         inkwellToken,
                     };
                 } catch (error) {
-                    console.error("NodePress Auth Error:", error.message);
-                    throw new Error(error.message || "Authentication failed");
+                    const err = error as Error;
+                    console.error("NodePress Auth Error:", err.message);
+                    throw new Error(err.message || "Authentication failed");
                 }
             },
         }),

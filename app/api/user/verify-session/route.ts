@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("NodePress Verify Session Error:", error.message);
+    console.error("NodePress Verify Session Error:", (error as Error).message);
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 }

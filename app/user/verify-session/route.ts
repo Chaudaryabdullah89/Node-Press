@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error("NodePress Verify Session Error:", error.message);
+    console.error("NodePress Verify Session Error:", (error as Error).message);
     if (bodyText) {
       console.error("NodePress Verify Session: Raw Body received:", bodyText);
     }
