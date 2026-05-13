@@ -1,4 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { NextAuthOptions } from "next-auth";
 import { prisma } from "./prisma";
 import { SignJWT } from "jose";
@@ -13,7 +14,7 @@ async function createInkwellToken(user: any) {
     return await new SignJWT({
         userId: String(user.id || user.userId),
         email: user.email,
-        name: user.username || user.email,
+        name: user.username || user.name || user.email,
         role: user.role,
     })
         .setProtectedHeader({ alg: "HS256" })
@@ -38,6 +39,10 @@ declare module "next-auth" {
 
 export const authOptions: NextAuthOptions = {
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID!,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -50,8 +55,6 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 try {
-
-
                     const user = await prisma.user.findUnique({
                         where: { email: credentials.email },
                     });
@@ -95,7 +98,36 @@ export const authOptions: NextAuthOptions = {
         signOut: "/logout",
     },
     callbacks: {
-        async jwt({ token, user, trigger }) {
+        async signIn({ user, account, profile }) {
+            if (account?.provider === "google") {
+                if (!user.email) return false;
+
+                // Check if user exists
+                let dbUser = await prisma.user.findUnique({
+                    where: { email: user.email },
+                });
+
+                // If not, create them (minimal profile)
+                if (!dbUser) {
+                    dbUser = await prisma.user.create({
+                        data: {
+                            email: user.email,
+                            username: user.name || user.email.split("@")[0],
+                            password: await bcrypt.hash(Math.random().toString(36), 10), // Random pass for OAuth users
+                            role: "USER",
+                            avatar: user.image || "",
+                        },
+                    });
+                }
+                
+                // Attach db specific info to the user object for the jwt callback
+                (user as any).id = dbUser.id;
+                (user as any).role = dbUser.role;
+                (user as any).inkwellToken = await createInkwellToken(dbUser);
+            }
+            return true;
+        },
+        async jwt({ token, user, trigger, account }) {
             if (user) {
                 token.id = user.id;
                 token.name = user.name;
