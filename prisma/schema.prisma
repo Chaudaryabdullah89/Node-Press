@@ -1,0 +1,176 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  username  String     @unique
+  password  String
+  name      String
+  role      Role       @default(READER)
+  avatar    String?
+  bio       String?
+  author    Author?
+  comments  Comment[]
+  likes     Like[]
+  bookmarks Bookmark[]
+  followers Follow[]   @relation("Following") // people who follow this user
+  following Follow[]   @relation("Followers") // people this user follows
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([username])
+  @@index([role])
+}
+
+enum Role {
+  READER
+  AUTHOR
+}
+
+model Author {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  username  String   @unique
+  bio       String?
+  avatar    String?
+  twitter   String?
+  website   String?
+  // space for post array when we create the model 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+
+  @@index([username])
+}
+
+enum PostStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model Post {
+  id          String     @id @default(uuid())
+  title       String
+  slug        String     @unique
+  content     String
+  excerpt     String?
+  imageUrl    String?
+  status      PostStatus @default(DRAFT)
+  published   Boolean    @default(false)
+  publishedAt DateTime?
+  isFeatured  Boolean?   @default(false)
+  author      Author     @relation(fields: [authorId], references: [id])
+  authorId    String
+  viewCount   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  postTags    PostTag[]
+  comments    Comment[]
+  likes       Like[]
+  bookmarks   Bookmark[]
+  category    Category?  @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+
+  @@index([authorId])
+  @@index([status])
+  @@index([published])
+  @@index([slug])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  posts     Post[]
+  createdAt DateTime @default(now())
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  posts     PostTag[]
+  createdAt DateTime  @default(now())
+
+  @@index([slug])
+}
+
+model PostTag {
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+  tag    Tag    @relation(fields: [tagId], references: [id])
+  tagId  String
+
+  @@id([postId, tagId])
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    String
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  parent    Comment?  @relation("CommentTread", fields: [parentId], references: [id])
+  parentId  String?
+  replies   Comment[] @relation("CommentTread")
+  name      String?
+  email     String?
+  approved  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@index([userId])
+}
+
+model Follow {
+  id         String   @id @default(cuid())
+  follower   User     @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId String
+  followee   User     @relation("Following", fields: [followeeId], references: [id], onDelete: Cascade)
+  followeeId String
+  createdAt  DateTime @default(now())
+
+  @@unique([followerId, followeeId])
+  @@index([followerId])
+  @@index([followeeId])
+}
