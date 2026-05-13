@@ -12,6 +12,17 @@ const SignupPage = () => {
   const [password, setpassword] = useState("");
   const [loading, setloading] = useState(false);
   const router = useRouter();
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      await signIn("google", { redirect: true, callbackUrl: "/" });
+    } catch (error) {
+      toast.error("Failed to sign in with Google");
+      setGoogleLoading(false);
+    }
+  };
 
   // signup handler function for signup
 
